@@ -1,6 +1,9 @@
 package com.ntt.proyecto_trello_api.config;
 
 
+import com.ntt.proyecto_trello_api.security.AuthEntryPointJwt;
+import com.ntt.proyecto_trello_api.security.AuthTokenFilter;
+import com.ntt.proyecto_trello_api.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
