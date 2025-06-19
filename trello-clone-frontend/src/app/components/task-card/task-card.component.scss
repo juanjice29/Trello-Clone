@@ -1,0 +1,138 @@
+.task-card {
+  margin-bottom: 12px;
+  cursor: grab;
+  transition: all 0.2s ease;
+  border-left: 4px solid #2196f3;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  mat-card-content {
+    padding: 16px !important;
+  }
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+
+  .task-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+.task-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.priority-chip {
+  color: white !important;
+  font-size: 11px;
+  font-weight: 500;
+  height: 24px;
+  min-height: 24px;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+  }
+}
+
+.task-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.task-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.assignee,
+.due-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #666;
+
+  .meta-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: #999;
+  }
+}
+
+.due-date {
+  &.overdue {
+    color: #f44336;
+    font-weight: 500;
+
+    .meta-icon {
+      color: #f44336;
+    }
+  }
+}
+
+.labels {
+  margin-top: 4px;
+
+  mat-chip-set {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  mat-chip {
+    font-size: 10px;
+    height: 20px;
+    min-height: 20px;
+    padding: 0 8px;
+  }
+}
+
+// Drag and drop states
+.cdk-drag-preview .task-card {
+  transform: rotate(5deg);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+.cdk-drag-placeholder .task-card {
+  opacity: 0.4;
+  background: #f0f0f0;
+}
+
+.cdk-drag-animating .task-card {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.delete-action {
+  color: #f44336 !important;
+}

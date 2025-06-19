@@ -1,0 +1,53 @@
+<mat-card class="task-card">
+  <mat-card-content>
+    <div class="task-header">
+      <h4 class="task-title">{{ task.title }}</h4>
+      <div class="task-actions">
+        <mat-chip class="priority-chip" [style.background-color]="getPriorityColor(task.priority)">
+          <mat-icon [style.color]="'white'">{{ getPriorityIcon(task.priority) }}</mat-icon>
+          {{ task.priority }}
+        </mat-chip>
+        <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="onEdit()">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="onDelete()" class="delete-action">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+
+    <p class="task-description" *ngIf="task.description">
+      {{ task.description }}
+    </p>
+
+    <div class="task-meta">
+      <div class="assignee" *ngIf="task.assignee">
+        <mat-icon class="meta-icon">person</mat-icon>
+        <span>{{ task.assignee.firstName }} {{ task.assignee.lastName }}</span>
+      </div>
+
+      <div class="due-date" *ngIf="task.dueDate"
+           [class.overdue]="isOverdue(task.dueDate)">
+        <mat-icon class="meta-icon">schedule</mat-icon>
+        <span>{{ formatDate(task.dueDate) }}</span>
+      </div>
+
+      <div class="labels" *ngIf="task.labels && task.labels.length > 0">
+        <mat-chip-set>
+          <mat-chip *ngFor="let label of task.labels"
+                    [style.background-color]="label.color"
+                    [style.color]="'white'">
+            {{ label.name }}
+          </mat-chip>
+        </mat-chip-set>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

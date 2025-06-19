@@ -1,0 +1,92 @@
+<div class="kanban-container">
+  <!-- Header -->
+  <div class="kanban-header">
+    <div class="project-info">
+      <button mat-icon-button (click)="goBack()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h2>{{ project?.name }}</h2>
+        <p class="project-description">{{ project?.description }}</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="createTask()">
+      <mat-icon>add</mat-icon>
+      New Task
+    </button>
+  </div>
+  <!-- Loading State -->
+  <div class="loading" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading tasks...</p>
+  </div>
+
+  <!-- Kanban Board -->
+  <div class="kanban-board" *ngIf="!isLoading">
+    <!-- TODO Column -->
+    <div class="kanban-column">
+      <div class="column-header todo-header">
+        <mat-icon>list</mat-icon>
+        <span>To Do ({{ todoTasks.length }})</span>
+      </div>
+      <div
+        class="task-list"
+        id="todo-list"
+        cdkDropList
+        [cdkDropListData]="todoTasks"
+        (cdkDropListDropped)="onTaskDrop($event)"
+        [cdkDropListConnectedTo]="['inprogress-list', 'done-list']">        <app-task-card
+          *ngFor="let task of todoTasks"
+          [task]="task"
+          (edit)="editTask($event)"
+          (delete)="deleteTask($event)"
+          cdkDrag>
+        </app-task-card>
+      </div>
+    </div>
+
+    <!-- IN PROGRESS Column -->
+    <div class="kanban-column">
+      <div class="column-header inprogress-header">
+        <mat-icon>schedule</mat-icon>
+        <span>In Progress ({{ inProgressTasks.length }})</span>
+      </div>
+      <div
+        class="task-list"
+        id="inprogress-list"
+        cdkDropList
+        [cdkDropListData]="inProgressTasks"
+        (cdkDropListDropped)="onTaskDrop($event)"
+        [cdkDropListConnectedTo]="['todo-list', 'done-list']">        <app-task-card
+          *ngFor="let task of inProgressTasks"
+          [task]="task"
+          (edit)="editTask($event)"
+          (delete)="deleteTask($event)"
+          cdkDrag>
+        </app-task-card>
+      </div>
+    </div>
+
+    <!-- DONE Column -->
+    <div class="kanban-column">
+      <div class="column-header done-header">
+        <mat-icon>check_circle</mat-icon>
+        <span>Done ({{ doneTasks.length }})</span>
+      </div>
+      <div
+        class="task-list"
+        id="done-list"
+        cdkDropList
+        [cdkDropListData]="doneTasks"
+        (cdkDropListDropped)="onTaskDrop($event)"
+        [cdkDropListConnectedTo]="['todo-list', 'inprogress-list']">        <app-task-card
+          *ngFor="let task of doneTasks"
+          [task]="task"
+          (edit)="editTask($event)"
+          (delete)="deleteTask($event)"
+          cdkDrag>
+        </app-task-card>
+      </div>
+    </div>
+  </div>
+</div>
