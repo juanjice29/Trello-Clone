@@ -11,9 +11,9 @@ export interface User {
 }
 
 export enum UserRole {
-  USER = 'USER',
-  PROJECT_MANAGER = 'PROJECT_MANAGER',
-  ADMIN = 'ADMIN'
+  USER = 'ROLE_USER',
+  PROJECT_MANAGER = 'ROLE_PROJECT_MANAGER',
+  ADMIN = 'ROLE_ADMIN'
 }
 
 export interface LoginRequest {
@@ -38,7 +38,7 @@ export interface JwtResponse {
   email: string;
   firstName: string;
   lastName: string;
-  roles: string[];
+  role: string;
 }
 
 export interface TokenRefreshRequest {

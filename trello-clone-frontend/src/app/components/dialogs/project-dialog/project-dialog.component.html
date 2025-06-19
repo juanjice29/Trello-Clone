@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>{{ data.isEdit ? 'Edit Project' : 'Create New Project' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Project Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter project name">
+      <mat-error *ngIf="projectForm.get('name')?.hasError('required')">
+        Project name is required
+      </mat-error>
+      <mat-error *ngIf="projectForm.get('name')?.hasError('minlength')">
+        Project name must be at least 3 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="3" placeholder="Enter project description"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option *ngFor="let status of projectStatuses" [value]="status">
+          {{ status }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="projectForm.invalid">
+    {{ data.isEdit ? 'Update' : 'Create' }}
+  </button>
+</mat-dialog-actions>

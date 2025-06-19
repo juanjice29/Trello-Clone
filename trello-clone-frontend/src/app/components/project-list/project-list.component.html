@@ -1,0 +1,68 @@
+<div class="project-list-container">
+  <div class="header">
+    <h2>Projects</h2>
+    <button mat-raised-button color="primary" (click)="createProject()" *ngIf="canManageProjects()">
+      <mat-icon>add</mat-icon>
+      New Project
+    </button>
+  </div>
+
+  <div class="loading" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading projects...</p>
+  </div>
+
+  <div class="projects-grid" *ngIf="!isLoading">
+    <mat-card class="project-card" *ngFor="let project of projects">
+      <mat-card-header>
+        <mat-card-title>{{ project.name }}</mat-card-title>
+        <mat-card-subtitle>
+          <span class="status-badge" [style.background-color]="getStatusColor(project.status)">
+            {{ project.status }}
+          </span>
+        </mat-card-subtitle>
+        <div class="card-actions" *ngIf="canManageProjects()">
+          <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editProject(project)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item (click)="deleteProject(project)" class="delete-action">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+          </mat-menu>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p class="description">{{ project.description || 'No description' }}</p>
+        <div class="project-meta">
+          <span class="owner">Owner: {{ project.owner.firstName }} {{ project.owner.lastName }}</span>
+          <span class="date">Created: {{ formatDate(project.createdAt) }}</span>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button color="primary" (click)="openProject(project)">
+          <mat-icon>visibility</mat-icon>
+          View Board
+        </button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Empty state -->
+    <div class="empty-state" *ngIf="projects.length === 0">
+      <mat-icon class="empty-icon">folder_open</mat-icon>
+      <h3>No Projects Yet</h3>
+      <p>Create your first project to get started with task management</p>
+      <button mat-raised-button color="primary" (click)="createProject()" *ngIf="canManageProjects()">
+        <mat-icon>add</mat-icon>
+        Create Project
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of, tap } from 'rxjs';
 import { User, LoginRequest, SignupRequest, JwtResponse, TokenRefreshRequest, TokenRefreshResponse } from '../models';
 
 @Injectable({
@@ -41,13 +41,14 @@ export class AuthService {
       .pipe(
         tap(response => {
           this.setTokens(response.token, response.refreshToken);
+          console.log(response)
           const user: User = {
             id: response.id,
             username: response.username,
             email: response.email,
             firstName: response.firstName,
             lastName: response.lastName,
-            role: response.roles[0] as any,
+            role: response.role as any,
             enabled: true,
             createdAt: new Date(),
             updatedAt: new Date()
@@ -62,12 +63,32 @@ export class AuthService {
     return this.http.post(`${this.API_URL}/signup`, userData);
   }
 
-  logout(): void {
+  logout(): Observable<any> {
+    return this.http.post(`${this.API_URL}/signout`, {}, { headers: this.getAuthHeaders() })
+      .pipe(
+        tap(() => {
+          // Esta lógica se ejecuta SOLO si la llamada al backend es exitosa (código 2xx).
+          this.performClientSideLogout();
+        }),
+        catchError(error => {
+          // En caso de que el backend falle (ej: token expirado, servidor caído),
+          // forzamos el logout del lado del cliente para asegurar que el usuario
+          // no se quede en un estado inconsistente.
+          console.error('Logout failed on server', error);
+          this.performClientSideLogout();
+          // Devolvemos un observable vacío o con un valor por defecto para que la cadena no se rompa.
+          return of(null);
+        })
+      );
+  }
+  private performClientSideLogout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
     this.currentUserSubject.next(null);
     this.isAuthenticatedSubject.next(false);
+    console.log('Client-side logout performed.');
   }
+
 
   refreshToken(): Observable<TokenRefreshResponse> {
     const refreshToken = this.getRefreshToken();
