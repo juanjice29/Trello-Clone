@@ -1,7 +1,8 @@
 package com.ntt.proyecto_trello_api.security;
 
-import com.example.demo.model.User;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ntt.proyecto_trello_api.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

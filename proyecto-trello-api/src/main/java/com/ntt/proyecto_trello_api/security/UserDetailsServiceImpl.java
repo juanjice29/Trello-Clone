@@ -1,7 +1,8 @@
 package com.ntt.proyecto_trello_api.security;
 
-import com.example.demo.model.User;
-import com.example.demo.repository.UserRepository;
+
+import com.ntt.proyecto_trello_api.model.User;
+import com.ntt.proyecto_trello_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
